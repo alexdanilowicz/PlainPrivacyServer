@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Blueprint, jsonify, make_response, request, render_template
 from datetime import datetime
 import sys
 import operator
@@ -7,6 +7,8 @@ import operator
 from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
+
+import urllib.request
 
 
 app = Flask(__name__)
@@ -23,7 +25,8 @@ def homepage():
 
 @app.route('/parse', methods=['GET'])
 def main():
-    html = request.args['html']
+    url = request.args['url']
+    html = readUrl(url)
     language_client = language.LanguageServiceClient()
 
     document = language.types.Document(
@@ -40,18 +43,26 @@ def main():
 
     sorted_sally = sorted(sally.items(), key=operator.itemgetter(1), reverse=True)
 
-    for word, score in sorted_sally:
-        print('=' * 20)
-        print(u'{:<16}: {}'.format('name', word))
-        print(u'{:<16}: {}'.format('score', score))
+    # for word, score in sorted_sally:
+    #     print('=' * 20)
+    #     print(u'{:<16}: {}'.format('name', word))
+    #     print(u'{:<16}: {}'.format('score', score))
 
-    return sorted_sally[:3]
+    return jsonify(sorted_sally[:3])
 
 
 @app.route('/testroute')
 def testroute():
     return "test text"
 
+def readUrl(urlString):
+    # print (urlString)
+
+    urlFile = urllib.request.urlopen(urlString)
+    bytesHtml = urlFile.read()
+    htmlString = bytesHtml.decode("utf8")
+
+    return htmlString
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
