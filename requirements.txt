@@ -1,4 +1,3 @@
 Flask
 gunicorn
 google.cloud
-urllib
