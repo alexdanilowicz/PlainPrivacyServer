@@ -21,7 +21,7 @@ def homepage():
     <img src="http://loremflickr.com/600/400" />
     """.format(time=the_time)
 
-@app.route('/parse'. methods=['GET'])
+@app.route('/parse', methods=['GET'])
 def main():
     html = request.args['html']
     language_client = language.LanguageServiceClient()
@@ -46,6 +46,11 @@ def main():
         print(u'{:<16}: {}'.format('score', score))
 
     return sorted_sally[:3]
+
+
+@app.route('/testroute')
+def testroute():
+    return "test text"
 
 
 if __name__ == '__main__':
