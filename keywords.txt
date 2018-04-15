@@ -19,7 +19,7 @@ Mobile number
 Phone number
 Username
 Password
-Contacts
+Contact
 Third Party
 Location
 Photo

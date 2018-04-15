@@ -36,7 +36,7 @@ def findOccurences(docText, keywords, actions):
 def findMatches(wordToList):
     print('test')
 
-def backAndForth(docText, keywords, actions, tolerance):
+def backAndForth(docText, keywords, actions, tolerance, sally):
     score = 0
     index = 0
     allWords = docText.split()
@@ -51,21 +51,45 @@ def backAndForth(docText, keywords, actions, tolerance):
                 if check in keywords:
                     print(word + ':' + check)
                     dist = abs(index-spot)
-                    score = score + (1/dist)
+                    weight = sally.get(check, 0)
+                    score = score + ((1/dist) * weight)
                 elif check + 's' in keywords:
                     print(word + ':' + check + 's')
                     dist = abs(index-spot)
-                    score = score + (1/dist)
+                    weight = sally.get(check, 0)
+                    score = score + ((1/dist) * weight)
                 spot = spot + 1
         index = index + 1
     return score
 
+def find_sally(text, keywords):
+    keywords = buildKeywords()
+    language_client = language.LanguageServiceClient()
+
+    document = language.types.Document(
+        content=text,
+        type=language.enums.Document.Type.PLAIN_TEXT)
+
+    entities = language_client.analyze_entities(document).entities
+    sally = {}
+    for entity in entities:
+        word = entity.name.lower()
+        if word in keywords or word + 's' in keywords:
+            score = sally.get(word, 0)
+            score += entity.salience
+            sally[word] = score
+
+    return sally
+
+
 def main():
+    tolerance = 12
     actions = buildActions()
     keywords = buildKeywords()
     text = open('google.txt', 'r').read()
-    score = backAndForth(text, keywords, actions, 12)
+    sally = find_sally(text, keywords)
+    score = backAndForth(text, keywords, actions, tolerance, sally)
     print(score)
-
+    return score
 
 main()
