@@ -67,7 +67,11 @@ def analyzeUrl():
     text = readUrl(request.args['url'])
     # print("received text...")
     if not text:
-        formattedResults = "We are unable to run our analysis on this website"
+        text = readUrl2(request.args['url'])
+        if not text:
+            formattedResults = "We are unable to run our analysis on this website"
+        else:
+            formattedResults = collectResults(text)
     else:
         formattedResults = collectResults(text)
     # print("received results...")
@@ -80,16 +84,16 @@ def analyzeUrl():
     }
     return jsonify(compiledResults)
 
-# def readUrl2(urlString):
-#     try:
-#         urlFile = urllib.request.urlopen(urlString)
-#         bytesHtml = urlFile.read()
-#         htmlString = bytesHtml.decode("utf8")
-#         soup = BeautifulSoup(htmlString)
-#         text = soup.get_text()
-#         return text
-#     except:
-#         return "Unable to obtain Privacy Policy"
+def readUrl2(urlString):
+    try:
+        urlFile = urllib.request.urlopen(urlString)
+        bytesHtml = urlFile.read()
+        htmlString = bytesHtml.decode("utf8")
+        soup = BeautifulSoup(htmlString)
+        text = soup.get_text()
+        return text
+    except:
+        return False
 
 def readUrl(urlString):
     resp = requests.get(urlString)
