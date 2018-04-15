@@ -183,7 +183,6 @@ def formatResults(result):
     for key in result:
         if key[0] not in formatted:
             formatted[key[0]] = []
-
         insertVal = mapKeyword(key[1])
         formatted[key[0]].append(insertVal)
     return formatted
@@ -237,7 +236,6 @@ def findPhrase(docText):
             splitList = (docText[position-1:]).split(".")
             finalString = ""
             for sentence in splitList[:7]:
-                #print(sentence)
                 finalString = finalString + sentence + "."
             whyList.append(summarize(finalString))
 
@@ -248,7 +246,6 @@ def findPhrase(docText):
     if finalString == "":
         finalString = "We cannot provide a summary for this website's privacy policy."
 
-    print(finalString)
     return finalString
 
 
