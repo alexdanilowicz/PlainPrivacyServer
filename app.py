@@ -11,6 +11,7 @@ from google.cloud.language import types
 import nltk
 from nltk.stem.wordnet import WordNetLemmatizer
 from bs4 import BeautifulSoup
+from gensim.summarization import summarize
 
 import urllib.request
 
@@ -68,7 +69,14 @@ def testroute():
     print("received text...")
     formattedResults = collectResults(text)
     print("received results...")
-    return jsonify(formattedResults)
+
+    summary = findPhrase(text)
+
+    compiledResults = {
+        "results": formattedResults,
+        "summary": summary
+    }
+    return jsonify(compiledResults)
 
 def readUrl(urlString):
     urlFile = urllib.request.urlopen(urlString)
@@ -76,7 +84,6 @@ def readUrl(urlString):
     htmlString = bytesHtml.decode("utf8")
     soup = BeautifulSoup(htmlString)
     return soup.get_text()
-
 
 def buildKeywords():
     keywords = set()
@@ -205,6 +212,41 @@ def mapKeyword(keyword):
         return "phone specs"
 
     return keyword
+
+def buildOtherKeywords():
+    keywords = set()
+    with open('WhyKeywords.txt') as fp:
+        for line in fp:
+            keywords.add(line.strip().lower())
+    return keywords
+
+def findPhrase(docText):
+    keywords = buildOtherKeywords()
+    part = int(len(docText)/5)
+    docText = docText[part:]
+    noHeaderText = docText.lower()
+    whyList = []
+    for key in keywords:
+        key = key.strip("\n")
+        if noHeaderText.find(key) != -1:
+            print(key)
+            position = noHeaderText.index(key)
+            splitList = (docText[position-1:]).split(".")
+            finalString = ""
+            for sentence in splitList[:7]:
+                #print(sentence)
+                finalString = finalString + sentence + "."
+            whyList.append(summarize(finalString))
+
+    finalString = ""
+    for sentence in whyList:
+        finalString = finalString + sentence + " "
+
+    if finalString == "":
+        finalString = "There is no summary for this privacy policy."
+
+    print(finalString)
+    return finalString
 
 
 if __name__ == '__main__':
