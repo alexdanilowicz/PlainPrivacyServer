@@ -175,8 +175,36 @@ def formatResults(result):
     for key in result:
         if key[0] not in formatted:
             formatted[key[0]] = []
-        formatted[key[0]].append(key[1])
+
+        insertVal = mapKeyword(key[1])
+        formatted[key[0]].append(insertVal)
     return formatted
+
+def mapKeyword(keyword):
+    if keyword == "credit":
+        return "credit card information"
+    elif keyword == "debit":
+        return "debit card information"
+    elif keyword == "mobile":
+        return "mobile device information"
+    elif keyword == "third":
+        return "to third party apps"
+    elif keyword == "ip":
+        return "IP address"
+    elif keyword == "computer":
+        return "computer information"
+    elif keyword == "transaction":
+        return "transaction data"
+    elif keyword == "preferences":
+        return "user preferences"
+    elif keyword == "photo":
+        return "photo(s)"
+    elif keyword == "device":
+        return "device information"
+    elif keyword == "phone":
+        return "phone specs"
+
+    return keyword
 
 
 if __name__ == '__main__':

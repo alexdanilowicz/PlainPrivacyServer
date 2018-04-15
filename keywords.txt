@@ -29,3 +29,4 @@ computer
 Phone
 device
 preferences
+browser
