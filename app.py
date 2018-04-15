@@ -85,6 +85,7 @@ def readUrl(urlString):
     soup = BeautifulSoup(htmlString)
     return soup.get_text()
 
+# builds keywords set from text file
 def buildKeywords():
     keywords = set()
     with open('keywords.txt') as fp:
@@ -92,6 +93,7 @@ def buildKeywords():
             keywords.add(line.strip().lower())
     return keywords
 
+# builds actions set from text file
 def buildActions():
     actions = set()
     with open('actionable_keywords.txt') as fp:
@@ -99,6 +101,7 @@ def buildActions():
             actions.add(line.strip().lower())
     return actions
 
+# not being used at the moment
 def findOccurences(docText, keywords, actions):
     wordToList = {}
     index = 0
@@ -132,13 +135,11 @@ def backAndForth(docText, keywords, actions, tolerance, sally):
                     key = wnl.lemmatize(word, 'v')
                     if (key, check) not in results:
                         results[key, check] = True
-
                     dist = abs(index-spot)
                     weight = sally.get(check, 0)
                     score = score + ((1/dist) * weight)
                 elif check + 's' in keywords:
                     # print(word + ':' + check + 's')
-
                     key = wnl.lemmatize(word, 'v')
                     if (key, check) not in results:
                         results[key, check] = True
@@ -245,7 +246,7 @@ def findPhrase(docText):
         finalString = finalString + sentence + " "
 
     if finalString == "":
-        finalString = "There is no summary for this privacy policy."
+        finalString = "We cannot provide a summary for this website's privacy policy."
 
     print(finalString)
     return finalString
