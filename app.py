@@ -226,9 +226,9 @@ def mapKeyword(keyword):
         return "cookies"
     elif keyword == "sex":
         return "gender"
-    elif keyword == "passport":
+    elif keyword == "passport":
         return "passport information"
-    elif keyword == "broswer":
+    elif keyword == "broswer":
         return "broswer information"
 
     return keyword
