@@ -8,31 +8,44 @@ from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
 
-def main(html):
+def buildSet():
+    keywords = set()
+    with open('keywords.txt') as fp:
+        for line in fp:
+            keywords.add(line.strip().lower())
+    print(keywords)
+    return keywords
 
+def main():
+    keywords = buildSet()
+    f = open(sys.argv[1],"r")
+    text = f.read()
     language_client = language.LanguageServiceClient()
 
     document = language.types.Document(
-        content=html,
+        content=text,
         type=language.enums.Document.Type.HTML)
 
     entities = language_client.analyze_entities(document).entities
     sally = {}
     for entity in entities:
         word = entity.name.lower()
-        score = sally.get(word, 0)
-        score += entity.salience
-        sally[word] = score
+        if word in keywords:
+            score = sally.get(word, 0)
+            score += entity.salience
+            sally[word] = score
 
-    sorted_sally = sorted(sally.items(), key=operator.itemgetter(1), reverse=True)
+    sorted_keywords = sorted(sally.items(), key=operator.itemgetter(1), reverse=True)
 
-    for word, score in sorted_sally:
+    for word, score in sorted_keywords:
         print('=' * 20)
-        print(u'{:<16}: {}'.format('name', word))
-        print(u'{:<16}: {}'.format('score', score))
+        print(u'{:<16}: {}'.format('#n', word))
+        print(u'{:<16}: {}'.format('#s', score))
 
+    f.close()
 
+    keyword = []
 
-    return sorted_sally[:3]
+    return sorted_keywords
 
 main()
