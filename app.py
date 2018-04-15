@@ -2,7 +2,7 @@ from flask import Flask, Blueprint, jsonify, make_response, request, render_temp
 from datetime import datetime
 import sys
 import operator
-
+import requests
 # Imports the Google Cloud client library
 from google.cloud import language, storage
 from google.cloud.language import enums
@@ -21,6 +21,9 @@ app = Flask(__name__)
 def startup():
     nltk.download('wordnet')
     storage_client = storage.Client.from_service_account_json('./PlainPrivacyGoogle.json')
+    print("sup")
+    readUrl('https://www.twitch.tv/p/legal/privacy-policy/')
+
 
 
 @app.route('/')
@@ -62,13 +65,16 @@ def homepage():
 
 
 @app.route('/analyzeUrl')
-def testroute():
-    print("begin analysis...")
+def analyzeUrl():
+    # print("begin analysis...")
     url = request.args['url']
     text = readUrl(request.args['url'])
-    print("received text...")
-    formattedResults = collectResults(text)
-    print("received results...")
+    # print("received text...")
+    if not text:
+        formattedResults = "We are unable to run our analysis on this website"
+    else:
+        formattedResults = collectResults(text)
+    # print("received results...")
 
     summary = findPhrase(text)
 
@@ -78,12 +84,24 @@ def testroute():
     }
     return jsonify(compiledResults)
 
+# def readUrl2(urlString):
+#     try:
+#         urlFile = urllib.request.urlopen(urlString)
+#         bytesHtml = urlFile.read()
+#         htmlString = bytesHtml.decode("utf8")
+#         soup = BeautifulSoup(htmlString)
+#         text = soup.get_text()
+#         return text
+#     except:
+#         return "Unable to obtain Privacy Policy"
+
 def readUrl(urlString):
-    urlFile = urllib.request.urlopen(urlString)
-    bytesHtml = urlFile.read()
-    htmlString = bytesHtml.decode("utf8")
-    soup = BeautifulSoup(htmlString)
-    return soup.get_text()
+    resp = requests.get(urlString)
+    if resp.ok:
+        soup = BeautifulSoup(resp.text)
+        return soup.get_text()
+    else:
+        return False
 
 def buildKeywords():
     keywords = set()
@@ -117,8 +135,6 @@ def backAndForth(docText, keywords, actions, tolerance, sally):
 
     results = {}
     wnl = WordNetLemmatizer()
-
-    print(len(allWords))
 
     for word in allWords:
         if word in actions:
