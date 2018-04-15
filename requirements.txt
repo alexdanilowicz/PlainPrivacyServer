@@ -3,3 +3,4 @@ gunicorn
 google.cloud
 nltk
 bs4
+gensim
