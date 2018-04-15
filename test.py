@@ -29,7 +29,7 @@ def main():
     sally = {}
     for entity in entities:
         word = entity.name.lower()
-        if word in keywords:
+        if word in keywords or word + 's' in keywords:
             score = sally.get(word, 0)
             score += entity.salience
             sally[word] = score
