@@ -13,7 +13,6 @@ def buildSet():
     with open('keywords.txt') as fp:
         for line in fp:
             keywords.add(line.strip().lower())
-    print(keywords)
     return keywords
 
 def main():
@@ -38,13 +37,11 @@ def main():
     sorted_keywords = sorted(sally.items(), key=operator.itemgetter(1), reverse=True)
 
     for word, score in sorted_keywords:
-        print('=' * 20)
-        print(u'{:<16}: {}'.format('#n', word))
-        print(u'{:<16}: {}'.format('#s', score))
+        print('=' * 20+'\n')
+        print(u'{:<16}: {}'.format('#n', word)+'\n')
+        print(u'{:<16}: {}'.format('#s', score)+'\n')
 
     f.close()
-
-    keyword = []
 
     return sorted_keywords
 

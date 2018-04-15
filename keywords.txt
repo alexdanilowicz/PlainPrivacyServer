@@ -8,6 +8,8 @@ address
 Passport
 Driver's license
 Credit Card
+debit card
+bank account
 Date of birth
 Birthplace
 Hometown
@@ -24,3 +26,9 @@ Photo
 Device information
 Log Information
 ip address
+purchase
+transaction
+computer
+Phone
+device
+preferences
