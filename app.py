@@ -210,6 +210,8 @@ def mapKeyword(keyword):
         return "device information"
     elif keyword == "phone":
         return "phone specs"
+    elif keyword == "cookie":
+        return "cookies"
 
     return keyword
 

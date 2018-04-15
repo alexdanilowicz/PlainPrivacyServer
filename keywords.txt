@@ -30,3 +30,4 @@ Phone
 device
 preferences
 browser
+cookie
