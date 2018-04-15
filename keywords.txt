@@ -1,34 +1,32 @@
-First Name
-Last Name
-Full Name
+name
 Name
-Home address
-Email address
+Home
+Email
 address
 Passport
-Driver's license
-Credit Card
-debit card
-bank account
-Date of birth
+license
+Credit
+debit
+bank
+birth
 Birthplace
 Hometown
 Gender
 Sex
-Mobile number
-Phone number
+Mobile
+Phone
 Username
 Password
 Contact
-Third Party
+Third
 Location
 Photo
-Device information
-Log Information
-ip address
+Device
+ip
 purchase
 transaction
 computer
 Phone
 device
 preferences
+browser
