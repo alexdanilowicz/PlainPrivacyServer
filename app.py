@@ -21,10 +21,6 @@ app = Flask(__name__)
 def startup():
     nltk.download('wordnet')
     storage_client = storage.Client.from_service_account_json('./PlainPrivacyGoogle.json')
-    print("sup")
-    readUrl('https://www.twitch.tv/p/legal/privacy-policy/')
-
-
 
 @app.route('/')
 def homepage():
@@ -252,7 +248,8 @@ def findPhrase(docText):
             splitList = (docText[position-1:]).split(".")
             finalString = ""
             for sentence in splitList[:7]:
-                finalString = finalString + sentence + "."
+                sentence = sentence.strip()
+                finalString = finalString + sentence + ". "
             whyList.append(summarize(finalString))
 
     finalString = ""
