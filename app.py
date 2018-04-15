@@ -62,9 +62,12 @@ def homepage():
 
 @app.route('/analyzeUrl')
 def testroute():
+    print("begin analysis...")
     url = request.args['url']
     text = readUrl(request.args['url'])
+    print("received text...")
     formattedResults = collectResults(text)
+    print("received results...")
     return jsonify(formattedResults)
 
 def readUrl(urlString):
@@ -108,6 +111,7 @@ def backAndForth(docText, keywords, actions, tolerance, sally):
     results = {}
     wnl = WordNetLemmatizer()
 
+    print(len(allWords))
 
     for word in allWords:
         if word in actions:
@@ -117,7 +121,7 @@ def backAndForth(docText, keywords, actions, tolerance, sally):
             while spot <= front:
                 check = allWords[spot]
                 if check in keywords:
-                    print(word + ':' + check)
+                    # print(word + ':' + check)
                     key = wnl.lemmatize(word, 'v')
                     if (key, check) not in results:
                         results[key, check] = True
@@ -126,7 +130,7 @@ def backAndForth(docText, keywords, actions, tolerance, sally):
                     weight = sally.get(check, 0)
                     score = score + ((1/dist) * weight)
                 elif check + 's' in keywords:
-                    print(word + ':' + check + 's')
+                    # print(word + ':' + check + 's')
 
                     key = wnl.lemmatize(word, 'v')
                     if (key, check) not in results:
@@ -162,8 +166,8 @@ def collectResults(text):
     tolerance = 60
     actions = buildActions()
     keywords = buildKeywords()
-    sally = find_sally(text, keywords)
-    results = backAndForth(text, keywords, actions, tolerance, sally)
+    # sally = find_sally(text, keywords)
+    results = backAndForth(text, keywords, actions, tolerance, {})
     return formatResults(results)
 
 def formatResults(result):
