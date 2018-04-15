@@ -224,6 +224,12 @@ def mapKeyword(keyword):
         return "phone specs"
     elif keyword == "cookie":
         return "cookies"
+    elif keyword == "sex":
+        return "gender"
+    elif keyword == "passport":
+        return "passport information"
+    elif keyword == "broswer":
+        return "broswer information"
 
     return keyword
 
