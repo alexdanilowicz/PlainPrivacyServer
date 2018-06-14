@@ -1,4 +1,4 @@
-# ![Logo](images/logo_64.jpg) Plain Privacy Server
+# ![Logo](images/logo_64.png) Plain Privacy Server
 
 Collaborators: Chris Bertasi, Alexander Danilowicz, Dylan Hong, and Teddy Ni.
 
