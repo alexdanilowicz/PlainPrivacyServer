@@ -4,9 +4,9 @@ import sys
 import operator
 import requests
 # Imports the Google Cloud client library
-#from google.cloud import language, storage
-#from google.cloud.language import enums
-# from google.cloud.language import types
+from google.cloud import language, storage
+from google.cloud.language import enums
+from google.cloud.language import types
 
 import nltk
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -187,7 +187,7 @@ def find_sally(text, keywords):
     return sally
 
 def collectResults(text):
-    tolerance = 70
+    tolerance = 60
     actions = buildActions()
     keywords = buildKeywords()
     # sally = find_sally(text, keywords)
@@ -253,6 +253,7 @@ def findPhrase(docText):
     for key in keywords:
         key = key.strip("\n")
         if noHeaderText.find(key) != -1:
+            print(key)
             position = noHeaderText.index(key)
             splitList = (docText[position-1:]).split(".")
             finalString = ""
